@@ -92,7 +92,7 @@ class PluginTextformat extends BlockPlugin
             "\r"
         ), "\n", $this->buffer));
 
-	foreach($pgs as $i => $v) {
+	    foreach($pgs as $i => $v) {
             if (empty($pgs[$i])) {
                 continue;
             }

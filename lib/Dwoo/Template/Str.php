@@ -196,7 +196,7 @@ class Str implements ITemplate
      *
      * @return string
      */
-    public function getResourceName()
+    public function getResourceName() : string
     {
         return 'string';
     }
@@ -216,7 +216,7 @@ class Str implements ITemplate
      *
      * @return string
      */
-    public function getSource()
+    public function getSource() : string
     {
         return $this->template;
     }

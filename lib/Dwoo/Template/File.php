@@ -1,17 +1,19 @@
 <?php
 /**
- * Copyright (c) 2013-2017
+ * Copyright (c) 2013-2020
  *
  * @category  Library
  * @package   Dwoo\Template
  * @author    Jordi Boggiano <j.boggiano@seld.be>
  * @author    David Sanchez <david38sanchez@gmail.com>
+ * @author    Bianka Martinovic <info@webbird.de>
  * @copyright 2008-2013 Jordi Boggiano
- * @copyright 2013-2017 David Sanchez
- * @license   http://dwoo.org/LICENSE LGPLv3
- * @version   1.4.0
- * @date      2017-03-16
- * @link      http://dwoo.org/
+ * @copyright 2013-2016 David Sanchez
+ * @copyright 2020-     Bianka Martinovic
+ * @license   http://dwoo.org/LICENSE Modified BSD License
+ * @version   1.4
+ * @date      16/11/2020
+ * @link      http://blackcat-cms.org/
  */
 
 namespace Dwoo\Template;
@@ -66,12 +68,12 @@ class File extends Str
      *                            template from others, if null it defaults to the filename+bits of the path
      * @param mixed  $includePath a string for a single path to look into for the given file, or an array of paths
      */
-    public function __construct($file, $cacheTime = null, $cacheId = null, $compileId = null, $includePath = array())
+    public function __construct(string $file, ?int $cacheTime = null, ?int $cacheId = null, ?int $compileId = null, mixed $includePath = array())
     {
         parent::__construct($file, $cacheTime, $cacheId, $compileId);
         $this->template = null;
-        $this->file     = $file;
-        $this->name     = basename($file);
+        $this->file      = $file;
+        $this->name      = basename($file);
         $this->setIncludePath($includePath);
         $this->compileId = $this->getResourceIdentifier();
     }
@@ -121,7 +123,7 @@ class File extends Str
      *
      * @return string
      */
-    public function getSource()
+    public function getSource() : string
     {
         return file_get_contents($this->getResourceIdentifier());
     }
@@ -131,7 +133,7 @@ class File extends Str
      *
      * @return string
      */
-    public function getResourceName()
+    public function getResourceName() : string
     {
         return 'file';
     }
@@ -166,7 +168,7 @@ class File extends Str
      *
      * @return string
      */
-    public function getUid()
+    public function getUid() : string
     {
         return (string)filemtime($this->getResourceIdentifier());
     }

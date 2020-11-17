@@ -1,17 +1,20 @@
 <?php
+
 /**
- * Copyright (c) 2013-2016
+ * Copyright (c) 2013-2020
  *
  * @category  Library
- * @package   Dwoo\Plugins\Blocks
+ * @package   Dwoo\Template
  * @author    Jordi Boggiano <j.boggiano@seld.be>
  * @author    David Sanchez <david38sanchez@gmail.com>
+ * @author    Bianka Martinovic <info@webbird.de>
  * @copyright 2008-2013 Jordi Boggiano
  * @copyright 2013-2016 David Sanchez
+ * @copyright 2020-     Bianka Martinovic
  * @license   http://dwoo.org/LICENSE Modified BSD License
- * @version   1.3.0
- * @date      2016-09-19
- * @link      http://dwoo.org/
+ * @version   1.4
+ * @date      17/11/2020
+ * @link      http://blackcat-cms.org/
  */
 
 namespace Dwoo\Plugins\Blocks;
@@ -60,7 +63,8 @@ class PluginIf extends BlockPlugin implements ICompilableBlock, IElseable
     {
         $p = array();
 
-	foreach($params as $k => $v) {
+        reset($params);
+		foreach($params as $k => $v) {
             $v = (string)$v;
             if (substr($v, 0, 1) === '"' || substr($v, 0, 1) === '\'') {
                 $vmod = strtolower(substr($v, 1, - 1));

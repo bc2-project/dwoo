@@ -1,18 +1,21 @@
 <?php
 /**
- * Copyright (c) 2013-2017
+ * Copyright (c) 2013-2020
  *
  * @category  Library
- * @package   Dwoo
+ * @package   Dwoo\Template
  * @author    Jordi Boggiano <j.boggiano@seld.be>
  * @author    David Sanchez <david38sanchez@gmail.com>
+ * @author    Bianka Martinovic <info@webbird.de>
  * @copyright 2008-2013 Jordi Boggiano
- * @copyright 2013-2017 David Sanchez
- * @license   http://dwoo.org/LICENSE LGPLv3
- * @version   1.3.6
- * @date      2017-03-22
- * @link      http://dwoo.org/
+ * @copyright 2013-2016 David Sanchez
+ * @copyright 2020-     Bianka Martinovic
+ * @license   http://dwoo.org/LICENSE Modified BSD License
+ * @version   1.4
+ * @date      16/11/2020
+ * @link      http://blackcat-cms.org/
  */
+
 
 namespace Dwoo;
 
@@ -266,7 +269,7 @@ class Compiler implements ICompiler
      * @param string $left  left delimiter
      * @param string $right right delimiter
      */
-    public function setDelimiters($left, $right)
+    public function setDelimiters(string $left, string $right)
     {
         $this->ld  = $left;
         $this->rd  = $right;
@@ -279,7 +282,7 @@ class Compiler implements ICompiler
      *
      * @return array containing the left and the right delimiters
      */
-    public function getDelimiters()
+    public function getDelimiters() : array
     {
         return array($this->ld, $this->rd);
     }
@@ -292,7 +295,7 @@ class Compiler implements ICompiler
      *
      * @param bool $allow allow nested comments or not, defaults to true (but the default internal value is false)
      */
-    public function setNestedCommentsHandling($allow = true)
+    public function setNestedCommentsHandling(?bool $allow = true)
     {
         $this->allowNestedComments = (bool)$allow;
     }
@@ -303,7 +306,7 @@ class Compiler implements ICompiler
      * @see    setNestedCommentsHandling
      * @return bool true if nested comments are allowed
      */
-    public function getNestedCommentsHandling()
+    public function getNestedCommentsHandling() : bool
     {
         return $this->allowNestedComments;
     }
@@ -317,7 +320,7 @@ class Compiler implements ICompiler
      *
      * @param bool $allow true to allow loose handling, false to restore default setting
      */
-    public function setLooseOpeningHandling($allow = false)
+    public function setLooseOpeningHandling(?bool $allow = false)
     {
         $this->allowLooseOpenings = (bool)$allow;
     }
@@ -328,7 +331,7 @@ class Compiler implements ICompiler
      * @see    setLooseOpeningHandling
      * @return bool true if loose tags are allowed
      */
-    public function getLooseOpeningHandling()
+    public function getLooseOpeningHandling() : bool
     {
         return $this->allowLooseOpenings;
     }
@@ -342,7 +345,7 @@ class Compiler implements ICompiler
      *
      * @param bool $enabled set to true to enable, false to disable
      */
-    public function setAutoEscape($enabled)
+    public function setAutoEscape(?bool $enabled)
     {
         $this->autoEscape = (bool)$enabled;
     }
@@ -353,7 +356,7 @@ class Compiler implements ICompiler
      *
      * @return bool
      */
-    public function getAutoEscape()
+    public function getAutoEscape() : bool
     {
         return $this->autoEscape;
     }
@@ -367,7 +370,7 @@ class Compiler implements ICompiler
      * @param bool  $autoload if set to true, the preprocessor is auto-loaded from one of the plugin directories, else
      *                        you must provide a valid callback
      */
-    public function addPreProcessor($callback, $autoload = false)
+    public function addPreProcessor(mixed $callback, ?bool $autoload = false)
     {
         if ($autoload) {
             $name  = str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '', Core::toCamelCase($callback));
@@ -392,13 +395,19 @@ class Compiler implements ICompiler
      *
      * @param mixed $callback either a valid callback to the preprocessor or a simple name if it was autoloaded
      */
-    public function removePreProcessor($callback)
+    public function removePreProcessor(mixed $callback)
     {
         if (($index = array_search($callback, $this->processors['pre'], true)) !== false) {
             unset($this->processors['pre'][$index]);
-        } elseif (($index = array_search(Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '',
-                    $callback),
-                $this->processors['pre'], true)) !== false) {
+        } elseif (($index = array_search(
+            Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(
+            Core::NAMESPACE_PLUGINS_PROCESSORS,
+            '',
+            $callback
+        ),
+            $this->processors['pre'],
+            true
+        )) !== false) {
             unset($this->processors['pre'][$index]);
         } else {
             $class = Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '', $callback);
@@ -420,7 +429,7 @@ class Compiler implements ICompiler
      * @param bool  $autoload if set to true, the postprocessor is auto-loaded from one of the plugin directories, else
      *                        you must provide a valid callback
      */
-    public function addPostProcessor($callback, $autoload = false)
+    public function addPostProcessor(mixed $callback, ?bool $autoload = false)
     {
         if ($autoload) {
             $name  = str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '', $callback);
@@ -445,13 +454,19 @@ class Compiler implements ICompiler
      *
      * @param mixed $callback either a valid callback to the postprocessor or a simple name if it was autoloaded
      */
-    public function removePostProcessor($callback)
+    public function removePostProcessor(mixed $callback)
     {
         if (($index = array_search($callback, $this->processors['post'], true)) !== false) {
             unset($this->processors['post'][$index]);
-        } elseif (($index = array_search(Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '',
-                    $callback),
-                $this->processors['post'], true)) !== false) {
+        } elseif (($index = array_search(
+            Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(
+            Core::NAMESPACE_PLUGINS_PROCESSORS,
+            '',
+            $callback
+        ),
+            $this->processors['post'],
+            true
+        )) !== false) {
             unset($this->processors['post'][$index]);
         } else {
             $class = Core::NAMESPACE_PLUGINS_PROCESSORS . str_replace(Core::NAMESPACE_PLUGINS_PROCESSORS, '', $callback);
@@ -473,13 +488,12 @@ class Compiler implements ICompiler
      * @return array|string
      * @throws Exception
      */
-    protected function loadProcessor($class, $name)
+    protected function loadProcessor(string $class, string $name) : mixed
     {
         if (!class_exists($class) && !function_exists($class)) {
             try {
-                $this->getCore()->getLoader()->loadPlugin($name);
-            }
-            catch (Exception $e) {
+                $this->getDwoo()->getLoader()->loadPlugin($name);
+            } catch (Exception $e) {
                 throw new Exception('Processor ' . $name . ' could not be found in your plugin directories, please ensure it is in a file named ' . $name . '.php in the plugin directory');
             }
         }
@@ -505,7 +519,7 @@ class Compiler implements ICompiler
      * @param string $name function name
      * @param int    $type plugin type (Core::*_PLUGIN)
      */
-    public function addUsedPlugin($name, $type)
+    public function addUsedPlugin(string $name, int $type)
     {
         $this->usedPlugins[$name] = $type;
     }
@@ -516,7 +530,7 @@ class Compiler implements ICompiler
      * @private
      * @return  array the list of used plugins in the parsed template
      */
-    public function getUsedPlugins()
+    public function getUsedPlugins() : array
     {
         return $this->usedPlugins;
     }
@@ -534,7 +548,7 @@ class Compiler implements ICompiler
      * @param string $uuid   unique id of the function
      * @param string $body   function php code
      */
-    public function addTemplatePlugin($name, array $params, $uuid, $body = null)
+    public function addTemplatePlugin(string $name, array $params, string $uuid = null, string $body = null)
     {
         $this->templatePlugins[$name] = array('params' => $params, 'body' => $body, 'uuid' => $uuid);
     }
@@ -545,7 +559,7 @@ class Compiler implements ICompiler
      * @private
      * @return  array the parsed sub-templates
      */
-    public function getTemplatePlugins()
+    public function getTemplatePlugins() : array
     {
         return $this->templatePlugins;
     }
@@ -555,7 +569,7 @@ class Compiler implements ICompiler
      *
      * @param string $name function name
      */
-    public function useTemplatePlugin($name)
+    public function useTemplatePlugin(string $name)
     {
         $this->templatePlugins[$name]['called'] = true;
     }
@@ -600,7 +614,7 @@ class Compiler implements ICompiler
      * @param int  $position the new pointer position
      * @param bool $isOffset if set to true, the position acts as an offset and not an absolute position
      */
-    public function setPointer($position, $isOffset = false)
+    public function setPointer(int $position, ?bool $isOffset = false)
     {
         if ($isOffset) {
             $this->pointer += $position;
@@ -614,7 +628,7 @@ class Compiler implements ICompiler
      *
      * @return int
      */
-    public function getPointer()
+    public function getPointer() : int
     {
         return $this->pointer;
     }
@@ -625,7 +639,7 @@ class Compiler implements ICompiler
      * @param int  $number   the new line number
      * @param bool $isOffset if set to true, the position acts as an offset and not an absolute position
      */
-    public function setLine($number, $isOffset = false)
+    public function setLine(int $number, ?bool $isOffset = false)
     {
         if ($isOffset) {
             $this->line += $number;
@@ -639,7 +653,7 @@ class Compiler implements ICompiler
      *
      * @return int
      */
-    public function getLine()
+    public function getLine() : int
     {
         return $this->line;
     }
@@ -663,7 +677,7 @@ class Compiler implements ICompiler
      *
      * @return void
      */
-    public function setTemplateSource($newSource, $fromPointer = false)
+    public function setTemplateSource(string $newSource, ?bool $fromPointer = false)
     {
         if ($fromPointer === true) {
             $this->templateSource = substr($this->templateSource, 0, $this->pointer) . $newSource;
@@ -680,7 +694,7 @@ class Compiler implements ICompiler
      *
      * @return string the template or partial template
      */
-    public function getTemplateSource($fromPointer = false)
+    public function getTemplateSource(?bool $fromPointer = false)
     {
         if ($fromPointer === true) {
             return substr($this->templateSource, $this->pointer);
@@ -709,7 +723,7 @@ class Compiler implements ICompiler
      * @return string a compiled php string
      * @throws CompilationException
      */
-    public function compile(Core $core, ITemplate $template)
+    public function compile(Core $core, ITemplate $template) : string
     {
         // init vars
         //		$compiled = '';
@@ -967,7 +981,7 @@ class Compiler implements ICompiler
      *
      * @param string $function the sub-template name
      */
-    protected function resolveSubTemplateDependencies($function)
+    protected function resolveSubTemplateDependencies(string $function)
     {
         if ($this->debug) {
             echo 'Compiler::' . __FUNCTION__ . "\n";
@@ -992,7 +1006,7 @@ class Compiler implements ICompiler
      *
      * @throws CompilationException
      */
-    public function push($content, $lineCount = null)
+    public function push(?string $content, ?int $lineCount = null)
     {
         if ($lineCount === null) {
             $lineCount = substr_count($content, "\n");
@@ -1022,7 +1036,7 @@ class Compiler implements ICompiler
      *
      * @return array the current scope tree
      */
-    public function setScope($scope, $absolute = false)
+    public function setScope(mixed $scope, ?bool $absolute = false)
     {
         $old = $this->scopeTree;
 
@@ -1074,7 +1088,7 @@ class Compiler implements ICompiler
      *
      * @return string the preProcessing() method's output
      */
-    public function addBlock($type, array $params, $paramtype)
+    public function addBlock(string $type, ?array $params, ?int $paramtype = 2)
     {
         if ($this->debug) {
             echo 'Compiler::' . __FUNCTION__ . "\n";
@@ -1110,7 +1124,7 @@ class Compiler implements ICompiler
      *
      * @return string the preProcessing() method's output
      */
-    public function addCustomBlock($type, array $params, $paramtype)
+    public function addCustomBlock(string $type, array $params, ?int $paramtype=2)
     {
         $callback = $this->customPlugins[$type]['callback'];
         if (is_array($callback)) {
@@ -1140,7 +1154,7 @@ class Compiler implements ICompiler
      * @param string $type   block type (name)
      * @param array  $params parameters array
      */
-    public function injectBlock($type, array $params)
+    public function injectBlock(string $type, array $params)
     {
         if ($this->debug) {
             echo 'Compiler::' . __FUNCTION__ . "\n";
@@ -1169,7 +1183,7 @@ class Compiler implements ICompiler
      * @return string the output of all postProcessing() method's return values of the closed blocks
      * @throws CompilationException
      */
-    public function removeBlock($type)
+    public function removeBlock(string $type)
     {
         if ($this->debug) {
             echo 'Compiler::' . __FUNCTION__ . "\n";
@@ -1232,7 +1246,7 @@ class Compiler implements ICompiler
      *               'custom'=>bool defining whether it's a custom plugin or not, for internal use)
      * @throws CompilationException
      */
-    public function &findBlock($type, $closeAlong = false)
+    public function &findBlock(string $type, ?bool $closeAlong = false)
     {
         if ($closeAlong === true) {
             while ($b = end($this->stack)) {
@@ -1300,7 +1314,7 @@ class Compiler implements ICompiler
      *
      * @return array filtered parameters
      */
-    public function getCompiledParams(array $params)
+    public function getCompiledParams(array $params) : array
     {
         foreach ($params as $k => $p) {
             if (is_array($p)) {
@@ -1319,7 +1333,7 @@ class Compiler implements ICompiler
      *
      * @return array filtered parameters
      */
-    public function getRealParams(array $params)
+    public function getRealParams(array $params) : array
     {
         foreach ($params as $k => $p) {
             if (is_array($p)) {
@@ -1337,7 +1351,7 @@ class Compiler implements ICompiler
      *
      * @return array tokens
      */
-    public function getParamTokens(array $params)
+    public function getParamTokens(array $params) : array
     {
         foreach ($params as $k => $p) {
             if (is_array($p)) {
@@ -1363,7 +1377,7 @@ class Compiler implements ICompiler
      * @return string parsed values
      * @throws CompilationException
      */
-    protected function parse($in, $from, $to, $parsingParams = false, $curBlock = '', &$pointer = null)
+    protected function parse(string $in, int $from, ?int $to, mixed $parsingParams = false, ?string $curBlock = '', mixed &$pointer = null)
     {
         if ($this->debug) {
             echo 'Compiler::' . __FUNCTION__ . "\n";
@@ -1498,7 +1512,6 @@ class Compiler implements ICompiler
             if ($pointer !== null) {
                 ++ $pointer;
             }
-
             return $this->parse($in, $from + 1, $to, false, 'root', $pointer);
         } elseif ($curBlock === 'root' && preg_match('#^/([a-z_][a-z0-9_]*)?#i', $substr, $match)) {
             // close block
@@ -1533,7 +1546,6 @@ class Compiler implements ICompiler
                 echo 'TAG PARSING ENDED' . "\n";
             }
             $pointer += strlen($this->rd);
-
             return false;
         } elseif (is_array($parsingParams) && preg_match('#^(([\'"]?)[a-z0-9_]+\2\s*=' . ($curBlock === 'array' ? '>?' : '') . ')(?:\s+|[^=]).*#i', $substr, $match)) {
             // named parameter
@@ -1554,7 +1566,6 @@ class Compiler implements ICompiler
             );
 
             $parsingParams[] = $output;
-
             return $parsingParams;
         } elseif (preg_match('#^(\\\\?[a-z_](?:\\\\?[a-z0-9_]+)*::\$[a-z0-9_]+)#i', $substr, $match)) {
             // static member access
@@ -1638,8 +1649,7 @@ class Compiler implements ICompiler
                     // load if plugin
                     try {
                         $this->getPluginType('if');
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         throw new CompilationException($this, 'Assignments require the "if" plugin to be accessible');
                     }
 
@@ -1735,7 +1745,7 @@ class Compiler implements ICompiler
      * @throws Exception
      * @throws SecurityException
      */
-    protected function parseFunction($in, $from, $to, $parsingParams = false, $curBlock = '', &$pointer = null)
+    protected function parseFunction(string $in, int $from, ?int $to, mixed $parsingParams = false, ?string $curBlock = '', mixed &$pointer = null)
     {
         $output = '';
         $cmdstr = substr($in, $from, $to - $from);
@@ -2213,7 +2223,7 @@ class Compiler implements ICompiler
      * @return string parsed values
      * @throws CompilationException
      */
-    protected function parseString($in, $from, $to, $parsingParams = false, $curBlock = '', &$pointer = null)
+    protected function parseString(string $in, int $from, ?int $to, mixed $parsingParams = false, ?string $curBlock = '', mixed &$pointer = null)
     {
         $substr = substr($in, $from, $to - $from);
         $first  = $substr[0];
@@ -2326,7 +2336,7 @@ class Compiler implements ICompiler
      *
      * @return string parsed constant
      */
-    protected function parseConstKey($key, $curBlock)
+    protected function parseConstKey(string $key, string $curBlock)
     {
         $key = str_replace('\\\\', '\\', $key);
 
@@ -2356,7 +2366,7 @@ class Compiler implements ICompiler
      * @return string parsed values
      * @throws CompilationException
      */
-    protected function parseVar($in, $from, $to, $parsingParams = false, $curBlock = '', &$pointer = null)
+    protected function parseVar(string $in, int $from, ?int $to, mixed $parsingParams = false, ?string $curBlock = '', mixed &$pointer = null)
     {
         $substr = substr($in, $from, $to - $from);
 
@@ -2574,7 +2584,7 @@ class Compiler implements ICompiler
      *
      * @return string parsed call(s)/read(s)
      */
-    protected function parseMethodCall($output, $methodCall, $curBlock, &$pointer)
+    protected function parseMethodCall(string $output, string $methodCall, string $curBlock, in &$pointer)
     {
         $ptr = 0;
         $len = strlen($methodCall);
@@ -3643,13 +3653,17 @@ class Compiler implements ICompiler
 
         $out = array();
         foreach ($ref->getParameters() as $param) {
-            if (($class = $param->getClass()) !== null && $class->name === 'Dwoo\Core') {
+            $class = $param->getType() && !$param->getType()->isBuiltin()
+                   ? new \ReflectionClass($param->getType()->getName())
+                   : null;
+            if ($class !== null && $class->name === 'Dwoo\Core') {
                 continue;
             }
-            if (($class = $param->getClass()) !== null && $class->name === 'Dwoo\Compiler') {
+            if ($class !== null && $class->name === 'Dwoo\Compiler') {
                 continue;
             }
-            if ($param->getName() === 'rest' && $param->isArray() === true) {
+            $isArray = $param->getType() && $param->getType()->getName() === 'array';
+            if ($param->getName() === 'rest' && $isArray === true) {
                 $out[] = array('*', $param->isOptional(), null);
                 continue;
             }

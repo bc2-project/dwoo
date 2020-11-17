@@ -1,17 +1,20 @@
 <?php
+
 /**
- * Copyright (c) 2013-2017
+ * Copyright (c) 2013-2020
  *
  * @category  Library
- * @package   Dwoo
+ * @package   Dwoo\Template
  * @author    Jordi Boggiano <j.boggiano@seld.be>
  * @author    David Sanchez <david38sanchez@gmail.com>
+ * @author    Bianka Martinovic <info@webbird.de>
  * @copyright 2008-2013 Jordi Boggiano
- * @copyright 2013-2017 David Sanchez
+ * @copyright 2013-2016 David Sanchez
+ * @copyright 2020-     Bianka Martinovic
  * @license   http://dwoo.org/LICENSE Modified BSD License
- * @version   1.3.4
- * @date      2017-03-07
- * @link      http://dwoo.org/
+ * @version   1.4
+ * @date      17/11/2020
+ * @link      http://blackcat-cms.org/
  */
 
 namespace Dwoo;
@@ -40,7 +43,7 @@ interface ITemplate
      *                     null it defaults to the Dwoo instance's cache time. 0 = disable and
      *                     -1 = infinite cache
      */
-    public function setCacheTime($seconds = null);
+    public function setCacheTime(?int $seconds = null);
 
     /**
      * Returns the cached template output file name, true if it's cache-able but not cached
@@ -60,7 +63,7 @@ interface ITemplate
      *
      * @return mixed full path of the cached file or false upon failure
      */
-    public function cache(Core $core, $output);
+    public function cache(Core $core, string $output);
 
     /**
      * Clears the cached template if it's older than the given time.
@@ -70,7 +73,7 @@ interface ITemplate
      *
      * @return bool true if the cache was not present or if it was deleted, false if it remains there
      */
-    public function clearCache(Core $core, $olderThan = - 1);
+    public function clearCache(Core $core, int $olderThan = - 1);
 
     /**
      * Returns the compiled template file name.
@@ -94,7 +97,7 @@ interface ITemplate
      *
      * @return string
      */
-    public function getResourceName();
+    public function getResourceName() : string;
 
     /**
      * Returns the resource identifier for this template or false if it has no identifier.
@@ -108,7 +111,7 @@ interface ITemplate
      *
      * @return string
      */
-    public function getSource();
+    public function getSource() : string;
 
     /**
      * Returns an unique string identifying the current version of this template,
@@ -136,11 +139,10 @@ interface ITemplate
     /**
      * Returns a new template object from the given resource identifier, null if no include is
      * possible (resource not found), or false if include is not permitted by this resource type.
-     * this method should also check if $dwoo->getSecurityPolicy() is null or not and do the
+     * this method should also check if $core->getSecurityPolicy() is null or not and do the
      * necessary permission checks if required, if the security policy prevents the template
      * generation it should throw a new Security\Exception with a relevant message
      *
-     * @param Core      $core
      * @param mixed     $resourceId     the resource identifier
      * @param int       $cacheTime      duration of the cache validity for this template, if null it defaults to the
      *                                  Dwoo instance that will render this template if null it defaults to the Dwoo
@@ -154,8 +156,7 @@ interface ITemplate
      * @param ITemplate $parentTemplate the template that is requesting a new template object (through an include,
      *                                  extends or any other plugin) an include, extends or any other plugin)
      *
-     * @return ITemplate|false|null
+     * @return ITemplate|null|false
      */
-    public static function templateFactory(Core $core, $resourceId, $cacheTime = null, $cacheId = null,
-                                           $compileId = null, ITemplate $parentTemplate = null);
+    public static function templateFactory(Core $core, mixed $resourceId, ?int $cacheTime, ?string $cacheId, ?string $compileId, ?ITemplate $parentTemplate);
 }
