@@ -119,7 +119,7 @@ interface ITemplate
      *
      * @return string
      */
-    public function getUid();
+    public function getUid() : string;
 
     /**
      * Returns the compiler used by this template, if it was just compiled, or null.

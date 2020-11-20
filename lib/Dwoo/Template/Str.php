@@ -227,7 +227,7 @@ class Str implements ITemplate
      *
      * @return string
      */
-    public function getUid()
+    public function getUid() : string
     {
         return $this->name;
     }
