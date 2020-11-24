@@ -1,11 +1,5 @@
 Dwoo
 ====
-[![Latest Stable Version](https://poser.pugx.org/dwoo/dwoo/v/stable?format=flat-square)](https://packagist.org/packages/dwoo/dwoo)
-[![Total Downloads](https://poser.pugx.org/dwoo/dwoo/downloads?format=flat-square)](https://packagist.org/packages/dwoo/dwoo)
-[![License](https://poser.pugx.org/dwoo/dwoo/license?format=flat-square)](https://packagist.org/packages/dwoo/dwoo)
-[![Build Status](https://travis-ci.org/dwoo-project/dwoo.svg?branch=master)](https://travis-ci.org/dwoo-project/dwoo)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dwoo-project/dwoo/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dwoo-project/dwoo/?branch=master)
-[![Gitter](https://badges.gitter.im/dwoo_project/support.svg)](https://gitter.im/dwoo_project/support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Dwoo is a PHP5/PHP7 Template Engine that was started in early 2008. The idea came
 from the fact that Smarty, a well known template engine, is getting older and
@@ -21,15 +15,17 @@ years to switch their application over to Dwoo progressively.
 
 > Dwoo **1.3.x** is compatible from **PHP 5.3.x** to **PHP 7.x**
 
-Documentation
-=============
-Dwoo's website to get the latest version is at http://dwoo.org/   
-The wiki/documentation pages are available at http://dwoo.org/documentation/
+About this fork
+===============
+
+We have been using Dwoo in BlackCat CMS for a very long time and are still very satisfied with its performance and easy extensibility. For this reason and because changing all the templates would be a considerable effort, we created this fork to make Dwoo run with PHP8. Although we created this fork primarily for BlackCat CMS, there is nothing to be said against using it outside of it. Although we don't plan to add more features, reprogram everything or officially support Dwoo, we're happy to look at pull requests or issues.
+
+> This fork is tested with **PHP 8.0 RC4** at the moment.
 
 Requirements
 ------------
-* PHP >= **5.3**
-* PHP >= **7.0**
+* PHP >= **7.2**
+* PHP >= **8.0 RC4**
 * [Multibyte String](http://php.net/manual/en/book.mbstring.php)
 
 License
